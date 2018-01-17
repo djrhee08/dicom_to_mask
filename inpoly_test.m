@@ -47,7 +47,7 @@ for i=1:length(item)
     end
 end
 %%
-qq = double(1:img_size(1));
+qq = double(1:img_size(1));  % This part has been changed!
 xq = repmat(qq,img_size(1),1);
 yq = repmat(qq',1,img_size(2));
 
