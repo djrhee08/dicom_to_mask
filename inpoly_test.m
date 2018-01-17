@@ -33,16 +33,21 @@ for i=1:length(item)
             data = data';
             data_temp = [data_temp;data;data(1,:)];
         end
-        %data_temp = sort(data_temp,'descend');
-        data_temp = data_temp - img_pos_temp; 
+        
+        data_temp = data_temp - img_pos_temp;
         data_temp = data_temp./img_pixsize;
+        
+        data_original{i} = data_temp;
+        
+        [~,idx] = sort(data_temp(:,3)); % sort just the third column (z coord)
+        data_temp = data_temp(idx,:);   % sort all 
+        
         data_total{index} = data_temp;
         index = index + 1;
     end
 end
 %%
-qq = double(0:img_size(1)-1);
-qq = qq + 0.5;
+qq = double(1:img_size(1));
 xq = repmat(qq,img_size(1),1);
 yq = repmat(qq',1,img_size(2));
 
@@ -57,12 +62,14 @@ for i=1:length(data_total)
             index_end = index_end + 1;
         elseif cpoint(j) == 1
             z = find(img_pos(:,3) == contour_temp(j,3));
+            
             % Create mask
             xv = contour_temp(index_start:index_end,1);
             yv = contour_temp(index_start:index_end,2);
 
-            in = inpolygon(xq,yq,xv,yv);
-            mask{i}.data(:,:,z) = in;
+            [in, on] = inpolygon(xq,yq,xv,yv);
+            %mask{i}.data(:,:,z) = on;
+            mask{i}.data(:,:,z) = (in&~on);
             
             % Prepare for the next indices
             index_end = index_end + 1;
@@ -77,13 +84,23 @@ c2 = mask{2}.data;
 c3 = mask{3}.data;
 c4 = mask{4}.data;
 
+q1 = data_original{1};
+q2 = data_original{2};
+q3 = data_original{3};
+q4 = data_original{4};
+
 figure;
-img(c2) = 10000;
-for i=1:30
+img(c3) = 10000;
+in = 73;
+out = 126;
+%for i=1:30
+    i = 13;
     imagesc(img(:,:,i))
     colormap gray
-    pause(0.3)
-end
+    hold on
+    plot(q3(in:out,1),q3(in:out,2))
+    hold off
+%end
 
 % img_temp = img(:,:,13);
 % contour_temp = data_temp(1:36,:);
