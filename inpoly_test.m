@@ -77,7 +77,9 @@ for i=1:length(data_total)
         end
     end      
 end
-
+%% Save the data
+save('image.mat','img');
+save('mask.mat','mask');
 %%
 c1 = mask{1}.data;
 c2 = mask{2}.data;
