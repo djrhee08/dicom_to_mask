@@ -22,7 +22,7 @@ Version 0.1
 
 ## Authors
 
-* **[Dong Joo Rhee](https://github.com/djrhee08)
+* [Dong Joo Rhee](https://github.com/djrhee08)
 
 
 ## License
