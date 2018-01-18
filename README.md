@@ -22,9 +22,8 @@ Version 0.1
 
 ## Authors
 
-* **[Dong Joo Rhee]** - *Initial work* (https://github.com/djrhee08)
+* **[Dong Joo Rhee](https://github.com/djrhee08)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
