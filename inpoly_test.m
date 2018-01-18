@@ -12,6 +12,22 @@ for i = 1:length(list)
         img_pos(info.InstanceNumber,:) = info.ImagePositionPatient;
     end
 end
+
+% Apply Slope and intercept to dicom image
+if isfield(info,'RescaleSlope') == 1
+    slope = info.RescaleSlope;
+else
+    slope = 1;
+end
+
+if isfield(info,'RescaleIntercept') == 1
+    intercept = info.RescaleIntercept;
+else
+    intercept = 0;
+end
+    
+img = img.*slope + intercept;
+
 img_orientation = info.ImageOrientationPatient;
 img_pixsize = info.PixelSpacing;
 img_pixsize = [img_pixsize;1]';

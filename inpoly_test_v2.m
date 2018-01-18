@@ -2,16 +2,34 @@ clear all
 clc
 close all
 %% Extract useful data from DICOM image files
-list = dir('*.dcm');
+dirname = 'MRI1/';
+list = dir(strcat(dirname,'*.dcm'));
 for i = 1:length(list)
     if strcmp(list(i).name,'str.dcm') == 1
-        str = dicominfo(list(i).name);
+        str = dicominfo(strcat(dirname,list(i).name));
     else
-        info = dicominfo(list(i).name);
-        img(info.InstanceNumber,:,:) = dicomread(list(i).name);
+        info = dicominfo(strcat(dirname,list(i).name));
+        img(info.InstanceNumber,:,:) = dicomread(strcat(dirname,list(i).name));
         img_pos(info.InstanceNumber,:) = info.ImagePositionPatient;
     end
 end
+
+% Apply Slope and intercept to dicom image
+if isfield(info,'RescaleSlope') == 1
+    slope = info.RescaleSlope;
+else
+    slope = 1;
+end
+
+if isfield(info,'RescaleIntercept') == 1
+    intercept = info.RescaleIntercept;
+else
+    intercept = 0;
+end
+    
+img = img.*slope + intercept;
+
+
 img_orientation = info.ImageOrientationPatient;
 img_pixsize = info.PixelSpacing;
 img_pixsize = [img_pixsize;1]';
